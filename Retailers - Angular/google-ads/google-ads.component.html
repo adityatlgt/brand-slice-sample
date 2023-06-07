@@ -1,0 +1,219 @@
+<div class="dashboardPage">
+    <div class="container-fluid p-0">
+        <div class="statsHolder clr mb-4 pt-2">
+            <owl-carousel [options]="carouselOptions" [carouselClasses]="['owl-theme', 'sliding']">
+                <div class="item {{activeOverview.name == 'campaignAds' && 'active'}}" id="caro-owl5"  (click)="changeOverviewChart('campaignAds', 'Summary', '#44f218')">
+                    <div class="stat ads transition-enlarge">
+                        <h5 class="mt-3">Summary</h5>
+                    </div> 
+                </div>
+                <div class="item {{activeOverview.name == 'impressions' && 'active'}}" id="caro-owl9"  (click)="changeOverviewChart('impressions', 'Impressions', '#ea4435')">
+                    <div class="stat impressions transition-enlarge">
+                        <h5>Impressions</h5>
+                        <div class="value">
+                            <span *ngIf="!googleAdsAccountLoading && adwordsData">{{adwordsData.impressions || 0}}</span>
+                            <span *ngIf="googleAdsAccountLoading"><img class="small-loader" src="{{smallLoader}}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="item {{activeOverview.name == 'clicks' && 'active'}}" id="caro-owl8"  (click)="changeOverviewChart('clicks', 'Clicks', '#4284f3')">
+                    <div class="stat clicks transition-enlarge">
+                        <h5>Clicks</h5>
+                        <div class="value">
+                            <span *ngIf="!googleAdsAccountLoading && adwordsData">{{adwordsData.clicks || 0}}</span>
+                            <span *ngIf="googleAdsAccountLoading"><img class="small-loader" src="{{smallLoader}}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="item {{activeOverview.name == 'ctr' && 'active'}}" id="caro-owl10"  (click)="changeOverviewChart('ctr', 'CTR', '#fabd04')">
+                    <div class="stat ctr transition-enlarge">
+                        <h5>CTR</h5>
+                        <div class="value">
+                            <span *ngIf="!googleAdsAccountLoading && adwordsData">{{adwordsData.ctr || '0.00'}}%</span>
+                            <span *ngIf="googleAdsAccountLoading"><img class="small-loader" src="{{smallLoader}}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="item {{activeOverview.name == 'averageCpc' && 'active'}}" id="caro-owl11"  (click)="changeOverviewChart('averageCpc', 'Avg CPC', '#d370ec')">
+                    <div class="stat avgCpc transition-enlarge">
+                        <h5>Avg CPC</h5>
+                        <div class="value">
+                            <span *ngIf="!googleAdsAccountLoading && adwordsData">{{adwordsData.averageCpc || '0.00'}}</span>
+                            <span *ngIf="googleAdsAccountLoading"><img class="small-loader" src="{{smallLoader}}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="item {{activeOverview.name == 'searchImpressionShare' && 'active'}}" id="caro-owl12" (click)="changeOverviewChart('searchImpressionShare', 'Search Impression Share', '#96c0ff')">
+                    <div class="stat impressionShare transition-enlarge">
+                        <h5>Impression Share</h5>
+                        <div class="value">
+                            <span *ngIf="!googleAdsAccountLoading && adwordsData">{{adwordsData.searchImpressionShare|| '0.00'}}</span>
+                            <span *ngIf="googleAdsAccountLoading"><img class="small-loader" src="{{smallLoader}}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="item {{activeOverview.name == 'cost' && 'active'}}" id="caro-owl7"  (click)="changeOverviewChart('cost', 'Ads Costs', '#44f218')">
+                    <div class="stat costs transition-enlarge">
+                        <h5>Ads Costs</h5>
+                        <div class="value">
+                            <span *ngIf="!googleAdsAccountLoading && adwordsData"><span>$</span>{{helper.addCommasInNumber(adwordsData.cost|| '0.00')}}</span>
+                            <span *ngIf="googleAdsAccountLoading"><img class="small-loader" src="{{smallLoader}}"></span>
+                        </div>
+                    </div>
+                </div>                
+            </owl-carousel>
+        </div>
+
+        <div class="box overview p-relative">
+            <div class="title-box clr">
+                <div class="title clr float-start">
+                    <div class="txt float-start">
+                        <h4 class="no-margin">{{activeOverview.label}}</h4>
+                        <p></p>
+                    </div>
+                </div>
+            </div>
+            <div class="" style="min-height: 100px;">
+                <div [ngClass]="overviewChartData?'row':'row d-none'">
+                    <div class="col-lg-12">
+                        <div class="chart-container" >
+                            <div id="overviewChartContainer" style="height: 370px; width: 100%;"></div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="googleAdsAccountLoading" class="chart-loader"><img class="big-loader-size-3" src="{{bigLoader}}"></div>
+                <div *ngIf="!googleAdsAccountLoading && !overviewChartData" class="no-chart-data">No Data Available</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <div class="box  p-relative">
+                    <div class="title-box clr">
+                        <div class="title clr float-start">
+                            <div class="icon float-start"><img src="assets/images/svgs/search-icon.svg" alt=""></div>
+                            <div class="txt float-start">
+                                <h4 class="no-margin">Top Search Terms
+                                    <select name="searchSortBy" [(ngModel)]="searchSortBy" [ngModelOptions]="{standalone: true}" class="form-control d-inline search-sort" (change)="changeSorting($event)">
+                                        <option value="impressions">Impressions</option>
+                                        <option value="cost">Cost</option>
+                                        <option value="clicks">Clicks</option>
+                                    </select> 
+                                    <span class="sort-by-label">Sort By:</span>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-result">
+                        <div *ngFor="let search of searchData; let i = index" class="search-string">
+                            <div class="search-div" *ngIf="i<35">
+                                <div class="tooltipcontainer">
+                                    <span class="tooltipHover">{{search.query}}</span>
+                                    <span class="tooltiptext">
+                                         <b>Impressions : </b>{{search.impressions}} <br/>
+                                         <b>Clicks : </b>{{search.clicks}} <br/>
+                                         <b>Cost : </b>{{helper.addCommasInNumber(search.cost)}} <br/>
+                                    </span>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div *ngIf="googleAdsSearchLoading" class="chart-loader"><img class="big-loader-size-3" src="{{bigLoader}}"></div>
+                        <div *ngIf="!googleAdsSearchLoading && !searchData.length" class="no-chart-data">No Data Available</div>
+                    </div>
+                </div>
+        
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <div class="box ">
+                    <div class="title-box clr">
+                        <div class="title clr">
+                            <div class="icon float-start"><img src="assets/images/svgs/bag-2.png" alt=""></div>
+                            <div class="txt float-start">
+                                <h4 class="no-margin float right">{{ productListType | titlecase }}
+                                    <select [(ngModel)]="productListType" [ngModelOptions]="{standalone: true}" class="form-control d-inline search-sort" (change)="changeProcutListingType($event)">
+                                        <option value="products">Product</option>
+                                        <option value="brands">Brand</option>
+                                    </select> 
+                                    <span class="sort-by-label">List By:</span>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div class="table-responsive location-table">
+                            <table *ngIf="!googleAdsProductLoading && productPaginatedRecord.length" class="table custom-table">
+                                <thead class="thead-default">
+                                    <tr>
+                                        <th>{{ productListType == 'products'? 'Product Name' : 'Brand Name' }}</th>
+                                        <th>Impressions</th>
+                                        <th>Clicks</th>
+                                        <th>CTR</th>
+                                        <th>Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <tr *ngFor="let productReport of productPaginatedRecord">
+                                        <td class="product-title-color">{{ productListType == 'products'? productReport.productTitle : productReport.productBrand }}</td>
+                                        <td>{{productReport.impressions}}</td>
+                                        <td>{{productReport.clicks}}</td>
+                                        <td>{{productReport.ctr}}%</td>
+                                        <td>{{helper.addCommasInNumber(productReport.cost)}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="" *ngIf="!googleAdsProductLoading && productPaginatedRecord.length">
+                                <div class="col-md-12 text-end">
+                                    <span class="product-paginate-left" (click)="productListChangePage('previous')">&lt;</span> <span class="product-pagination"> {{ productListCurrentPage }} / {{ productListTotalPage }} </span> <span class="product-paginate-right" (click)="productListChangePage('next')">&gt;</span>
+                                </div>                                
+                            </div>
+                            <div *ngIf="googleAdsProductLoading" class="chart-loader"><img class="big-loader-size-3" src="{{bigLoader}}"></div>
+                            <div *ngIf="!googleAdsProductLoading && !productPaginatedRecord.length" class="no-chart-data">No Data Available</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <div class="box demographics p-relative">
+                    <div class="title-box clr">
+                        <div class="title clr float-start">
+                            <div class="txt float-start">
+                                <h4 class="no-margin">Demographics: Gender</h4>
+                                <p></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div id="demographicChartContainer" style="height: 370px; width: 100%; margin-left:auto;margin-right:auto;"></div>
+                        <div *ngIf="googleAdsGenderLoading" class="chart-loader"><img class="big-loader-size-3" src="{{bigLoader}}"></div>
+                        <div *ngIf="!googleAdsGenderLoading && !genderChartData" class="no-chart-data">No Data Available</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <div class="box demographics p-relative">
+                    <div class="title-box clr">
+                        <div class="title clr float-start">
+                            <div class="txt float-start">
+                                <h4 class="no-margin">Demographics: Age</h4>
+                                <p></p> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="">
+                        <div id="demographicAgeChartContainer" style="height: 370px; width: 100%;"></div>
+                        <div *ngIf="googleAdsAgeLoading" class="chart-loader"><img class="big-loader-size-3" src="{{bigLoader}}"></div>
+                        <div *ngIf="!googleAdsAgeLoading && !ageChartData" class="no-chart-data">No Data Available</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+</div>

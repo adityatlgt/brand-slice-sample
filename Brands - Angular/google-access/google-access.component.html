@@ -1,0 +1,36 @@
+<div class="google-access">
+    <div class="row">
+        <div class="col-md-2 col-sm-12 col-xs-12">
+            <span class="google-label">Google Access: </span>
+        </div>
+        <div class="col-md-7 col-sm-12 col-xs-12">
+            <div class="google-content">
+                <div *ngIf="!validAccess" class="google-error alert alert-warning"> <i class="fa fa-exclamation" aria-hidden="true"></i> You haven't linked your google account yet!</div>
+                
+                <div *ngIf="validAccess" class="google-success  alert alert-success"> <i class="fa fa-check" aria-hidden="true"></i> Google access granted</div>
+            </div>
+        </div>
+        <div  class="col-md-3 col-sm-12 col-xs-12">
+            <button id="grant-access" (click)="doLogin()" [disabled]="actionDisabled" class="google-button"><img src="/assets/google.png"/> {{ !validAccess && retailerId ? 'Grant Google Access' : 'Modify Google Access'}}</button>
+        </div>
+        <div class="error-block mt-5" *ngIf="errorMessage">
+          <p>{{ errorMessage }}</p>
+        </div>
+        <div id="google-oauth-loader" class="d-flex justify-content-center d-none"><img src="../../../../assets/BrandSlice_Logo.gif" width="100" /></div>
+    </div>  
+</div>
+<!-- Modal -->
+<div class="modal" id="googleAuthenticationErrorModal" tabindex="-1" aria-labelledby="googleAuthenticationErrorModalExampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div _ngcontent-jsx-c27="" class="modal-body">
+        <h3 _ngcontent-jsx-c27="" class="text-center fw-bold mb-4">Issue Connecting Your Business Profile.</h3>
+        <p _ngcontent-jsx-c27="" class="text-center mb-4">We encountered an issue trying to get access to your Google Business Profile. This is typically caused by having a previous connection to the BrandSlice app that is no longer functioning.</p>
+        <p _ngcontent-jsx-c27="" class="text-center mb-4">To fix this issue, click on this link <a href="https://myaccount.google.com/u/0/permissions" target="_blank">https://myaccount.google.com/u/0/permissions</a> and locate the BrandSlice app in the list. Click on the BrandSlice App section and then use the Remove App button.  Once it’s been removed, return to these setup steps and try again.</p>
+        <div class="text-center"><button _ngcontent-jsx-c27="" type="button" class="btn btn-primary px-4" (click)="closeModal('googleAuthenticationErrorModal')">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

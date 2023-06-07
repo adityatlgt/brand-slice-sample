@@ -1,0 +1,38 @@
+.google-access{
+    margin-top: 1rem;
+    position: relative;
+    background-color: #fff;
+    .google-label {
+        font-weight: bold;
+        font-size: 1rem;
+    }
+    .google-error, .google-success {
+        font-size: .8rem;
+        margin-bottom: 0;
+    }
+    .google-button {
+      background-color: #EFEFEF;
+      color: #000;
+      padding: 0.25rem 0.5rem;
+      font-size: .8rem;
+      border-radius: 2px;
+      border: 1px solid #c6c4c4;
+      display: flex;
+        i {
+            margin-right: .5rem;
+        }
+        img{
+          width: 20px;
+          margin-right: 5px;
+        }
+    }
+    .error-block {
+        max-width: 616px;
+        margin: 0 auto;
+        p {
+          color: #fe4141;
+          font-size: 17px;
+          text-align: center;
+        }
+    }
+}

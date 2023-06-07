@@ -1,0 +1,28 @@
+.search-sort{
+    float: right;
+    width: fit-content;
+    font-size: .8rem;
+    height: 2rem !important;
+}
+span.sort-by-label {
+    float: right;
+    font-size: .8rem;
+    font-weight: 500;
+    margin-top: .5rem;
+    margin-right: .5rem;
+}
+.location-table{
+    margin-top: 1rem;
+    min-height: 22rem;
+}
+.product-title-color {
+    color: #6663F1;
+}
+span.product-paginate-left, span.product-paginate-right {
+    font-size: 28px;
+    color: #6663F1;
+    cursor: pointer;
+}
+span.product-pagination {
+    vertical-align: super;
+}
